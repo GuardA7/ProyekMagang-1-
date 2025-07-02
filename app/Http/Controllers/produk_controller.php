@@ -15,6 +15,6 @@ class produk_controller extends Controller
             ['nama' => 'Barang 4', 'kategori' => 'Kategori 4', 'masuk' => 10, 'keluar' => 1, 'stok' => 9, 'modal' => 25000],
         ];
 
-        return view('page.produk', compact('produk'));
+        return view('page.produk.index', compact('produk'));
     }
 }
