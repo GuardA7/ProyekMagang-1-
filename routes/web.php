@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\produk_controller;
 use App\Http\Controllers\pengaturan_controller;
 use App\Http\Controllers\pengguna_controller;
+use App\Http\Controllers\kirimPaket_Controller;
 
 // Login - Halaman awal
 Route::get('/', [AuthController::class, 'showLogin'])->name('login');
@@ -18,6 +19,14 @@ Route::get('/home', function () {
 // Halaman lain
 Route::get('/kirim-paket', function () {
     return view('page.kirimPaket.index');
+});
+
+Route::get('/kirim-paket', function () {
+    return view('page.kirimPaket.index');
+});
+
+Route::get('/kirim-paket/uporder', function () {
+    return view('page.kirimPaket.uporder');
 });
 
 Route::get('/produk', [produk_controller::class, 'index'])->name('produk.index');
