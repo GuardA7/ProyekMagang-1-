@@ -2,10 +2,9 @@
     <div class="container-fluid">
 
         {{-- Sidebar Toggle Button --}}
-        <button class="btn btn-outline-light me-3 d-lg-none" id="sidebarToggle">
+        <button class="btn btn-outline-light me-3" id="sidebarToggle">
             <i class="bi bi-list fs-4"></i>
         </button>
-
 
         {{-- Brand --}}
         <a class="navbar-brand fw-semibold text-white" href="#">
