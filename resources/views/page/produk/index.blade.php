@@ -1,4 +1,9 @@
 @extends('layouts.app')
+
+{{-- Include Modal --}}
+@include('page.produk.modal-tambah')
+@include('page.produk.modal-edit')
+
 @section('title', 'Produk')
 
 @section('content')
@@ -7,9 +12,8 @@
     {{-- Header --}}
     <div class="d-flex justify-content-between align-items-center flex-wrap mb-4 gap-2">
         <h2 class="fw-semibold text-dark m-0">Manajemen Produk</h2>
-
         <div class="d-flex gap-2">
-            <a href="#" class="btn btn-primary d-flex align-items-center gap-1">
+            <a href="#" class="btn btn-primary d-flex align-items-center gap-1" data-bs-toggle="modal" data-bs-target="#modalTambah">
                 <i class="bi bi-plus-circle"></i> Tambah Barang
             </a>
             <a href="#" class="btn btn-outline-primary d-flex align-items-center gap-1">
@@ -45,52 +49,56 @@
                         </tr>
                     </thead>
                     <tbody class="small">
-                        @foreach ($produk as $item)
+                        @foreach ([1, 2, 3] as $index)
                         <tr>
                             <td><input type="checkbox" /></td>
                             <td class="text-start d-flex align-items-center gap-2">
                                 <img src="https://via.placeholder.com/40" class="rounded shadow-sm" alt="foto" width="40" height="40">
                                 <div>
-                                    <div class="fw-medium">{{ $item['nama'] }}</div>
-                                    <div class="text-muted small">{{ $item['kategori'] }}</div>
+                                    <div class="fw-medium">Produk {{ $index }}</div>
+                                    <div class="text-muted small">Kategori {{ $index }}</div>
                                 </div>
                             </td>
-                            <td>{{ $item['masuk'] }}</td>
-                            <td>{{ $item['keluar'] }}</td>
-                            <td>
-                                @if ($item['stok'] <= 5)
-                                    <span class="badge bg-danger">Sisa {{ $item['stok'] }}</span>
-                                @else
-                                    {{ $item['stok'] }}
-                                @endif
-                            </td>
-                            <td>Rp {{ number_format($item['modal'], 0, ',', '.') }}</td>
+                            <td>10</td>
+                            <td>2</td>
+                            <td><span class="badge bg-success">Sisa 8</span></td>
+                            <td>Rp {{ number_format(15000 * $index, 0, ',', '.') }}</td>
                             <td>
                                 <div class="d-flex justify-content-center gap-2">
-                                    <a href="#" class="btn btn-sm btn-outline-warning">
+                                    <a href="javascript:void(0)" class="btn btn-sm btn-outline-warning"
+                                       onclick="showEditModal({id: {{ $index }}, nama: 'Produk {{ $index }}', kategori: 'Kategori {{ $index }}', stok: 8, modal: {{ 15000 * $index }}})">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
-                                    <form method="POST" action="#">
-                                        @csrf
-                                        <button type="submit" class="btn btn-sm btn-outline-danger">
-                                            <i class="bi bi-trash3"></i>
-                                        </button>
-                                    </form>
+                                    <button class="btn btn-sm btn-outline-danger" onclick="confirmDelete({{ $index }})">
+                                        <i class="bi bi-trash3"></i>
+                                    </button>
                                 </div>
                             </td>
                         </tr>
                         @endforeach
-                        @if (count($produk) === 0)
-                        <tr>
-                            <td colspan="7" class="text-center text-muted py-4">
-                                Data produk tidak ditemukan.
-                            </td>
-                        </tr>
-                        @endif
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
+
 </div>
+
+{{-- Script Edit Modal --}}
+<script>
+    function showEditModal(data) {
+        document.getElementById('editId').value = data.id;
+        document.getElementById('editNama').value = data.nama;
+        document.getElementById('editKategori').value = data.kategori;
+        document.getElementById('editStok').value = data.stok;
+        document.getElementById('editModal').value = data.modal;
+        new bootstrap.Modal(document.getElementById('modalEdit')).show();
+    }
+
+    function confirmDelete(id) {
+        if (confirm("Apakah kamu yakin ingin menghapus produk ini?")) {
+            alert('Produk dengan ID ' + id + ' berhasil dihapus (simulasi).');
+        }
+    }
+</script>
 @endsection
