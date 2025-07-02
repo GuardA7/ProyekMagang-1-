@@ -1,4 +1,7 @@
 @extends('layouts.app')
+@include('page.pengguna.tambah')
+@include('page.pengguna.edit')
+@include('page.pengguna.hapus')
 @section('title', 'Pengguna')
 
 @section('content')
@@ -7,8 +10,7 @@
     {{-- Header --}}
     <div class="d-flex justify-content-between align-items-center flex-wrap mb-4 gap-2">
         <h2 class="fw-semibold text-dark m-0">Manajemen Pengguna</h2>
-
-        <a href="{{ url('/pengguna/tambah') }}" class="btn btn-primary d-flex align-items-center gap-2">
+        <a href="#" class="btn btn-primary d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#modalTambah">
             <i class="bi bi-person-plus"></i> Tambah Pengguna
         </a>
     </div>
@@ -45,16 +47,18 @@
                             <td class="text-capitalize">{{ $user['role'] }}</td>
                             <td>
                                 <div class="d-flex justify-content-center gap-2">
-                                    <a href="{{ route('pengguna.edit', $user['id']) }}" class="btn btn-sm btn-outline-warning" title="Edit">
+                                    <button type="button" class="btn btn-sm btn-outline-warning btn-edit"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modalEdit"
+                                        data-id="{{ $user['id'] }}"
+                                        data-name="{{ $user['name'] }}"
+                                        data-role="{{ $user['role'] }}">
                                         <i class="bi bi-pencil"></i>
-                                    </a>
-                                    <button
-                                        type="button"
-                                        class="btn btn-sm btn-outline-danger btn-hapus"
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-danger btn-hapus"
                                         data-bs-toggle="modal"
                                         data-bs-target="#modalHapus"
-                                        data-id="{{ $user['id'] }}"
-                                        title="Hapus">
+                                        data-id="{{ $user['id'] }}">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </div>
@@ -64,9 +68,7 @@
 
                         @if (count($users) === 0)
                         <tr>
-                            <td colspan="4" class="text-center text-muted py-4">
-                                Data pengguna tidak ditemukan.
-                            </td>
+                            <td colspan="4" class="text-center text-muted py-4">Data pengguna tidak ditemukan.</td>
                         </tr>
                         @endif
                     </tbody>
@@ -76,40 +78,25 @@
     </div>
 </div>
 
-{{-- Modal Hapus --}}
-<div class="modal fade" id="modalHapus" tabindex="-1" aria-labelledby="modalHapusLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header bg-danger text-white">
-        <h5 class="modal-title" id="modalHapusLabel">Konfirmasi Hapus</h5>
-        <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        Apakah Anda yakin ingin menghapus pengguna ini?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-        <form id="formHapus" method="POST">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="btn btn-danger">Ya, Hapus</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
+{{-- Include Modals --}}
+
 @endsection
 
 @push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const formHapus = document.getElementById('formHapus');
-        const buttons = document.querySelectorAll('.btn-hapus');
-
-        buttons.forEach(button => {
+        // Edit
+        document.querySelectorAll('.btn-edit').forEach(button => {
             button.addEventListener('click', function () {
-                const userId = this.getAttribute('data-id');
-                formHapus.setAttribute('action', '/pengguna/' + userId);
+                document.getElementById('edit_name').value = this.dataset.name;
+                document.getElementById('edit_role').value = this.dataset.role;
+            });
+        });
+
+        // Hapus
+        document.querySelectorAll('.btn-hapus').forEach(button => {
+            button.addEventListener('click', function () {
+                document.getElementById('hapus_id').textContent = this.dataset.id;
             });
         });
     });
