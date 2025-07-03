@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\produk_controller;
 use App\Http\Controllers\pengaturan_controller;
@@ -54,6 +55,17 @@ Route::get('/laporan/barang', function () {
 Route::get('/laporan/keuangan', function () {
     return view('page.laporan.keuangan');
 });
+
+Route::post('/laporan/keuangan/upload', function (Request $request) {
+    $request->validate([
+        'file_keuangan' => 'required|mimes:csv,txt,xlsx|max:2048',
+    ]);
+
+    // Simulasi upload berhasil
+    // Nanti kamu bisa proses file CSV di sini
+
+    return back()->with('success', 'File berhasil diupload.');
+})->name('keuangan.upload');
 
 Route::get('/laporan/penjualan', function () {
     return view('page.laporan.penjualan');
